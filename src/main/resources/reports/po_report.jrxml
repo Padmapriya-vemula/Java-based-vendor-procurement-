@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports
+              http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="po_report" pageWidth="595" pageHeight="842"
+              columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+
+    <field name="id" class="java.lang.Long"/>
+    <field name="title" class="java.lang.String"/>
+    <field name="subtotal" class="java.math.BigDecimal"/>
+    <field name="tax" class="java.math.BigDecimal"/>
+    <field name="discount" class="java.math.BigDecimal"/>
+    <field name="totalAmount" class="java.math.BigDecimal"/>
+    <field name="status" class="java.lang.String"/>
+
+    <title>
+        <band height="50">
+            <staticText>
+                <reportElement x="0" y="10" width="555" height="30"/>
+                <textElement textAlignment="Center">
+                    <font size="18" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Purchase Order Report]]></text>
+            </staticText>
+        </band>
+    </title>
+
+    <columnHeader>
+        <band height="30">
+            <staticText>
+                <reportElement x="0" y="0" width="50" height="30"/>
+                <box><pen lineWidth="1"/></box>
+                <textElement textAlignment="Center"><font isBold="true"/></textElement>
+                <text><![CDATA[ID]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="50" y="0" width="150" height="30"/>
+                <box><pen lineWidth="1"/></box>
+                <textElement textAlignment="Center"><font isBold="true"/></textElement>
+                <text><![CDATA[Title]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="200" y="0" width="80" height="30"/>
+                <box><pen lineWidth="1"/></box>
+                <textElement textAlignment="Center"><font isBold="true"/></textElement>
+                <text><![CDATA[Subtotal]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="280" y="0" width="60" height="30"/>
+                <box><pen lineWidth="1"/></box>
+                <textElement textAlignment="Center"><font isBold="true"/></textElement>
+                <text><![CDATA[Tax]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="340" y="0" width="70" height="30"/>
+                <box><pen lineWidth="1"/></box>
+                <textElement textAlignment="Center"><font isBold="true"/></textElement>
+                <text><![CDATA[Discount]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="410" y="0" width="80" height="30"/>
+                <box><pen lineWidth="1"/></box>
+                <textElement textAlignment="Center"><font isBold="true"/></textElement>
+                <text><![CDATA[Total Amount]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="490" y="0" width="65" height="30"/>
+                <box><pen lineWidth="1"/></box>
+                <textElement textAlignment="Center"><font isBold="true"/></textElement>
+                <text><![CDATA[Status]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+
+    <detail>
+        <band height="25">
+            <textField>
+                <reportElement x="0" y="0" width="50" height="25"/>
+                <box><pen lineWidth="1"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="50" y="0" width="150" height="25"/>
+                <box><pen lineWidth="1"/></box>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <paragraph leftIndent="5"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
+            </textField>
+            <textField pattern="#,##0.00">
+                <reportElement x="200" y="0" width="80" height="25"/>
+                <box><pen lineWidth="1"/></box>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <paragraph rightIndent="5"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{subtotal}]]></textFieldExpression>
+            </textField>
+            <textField pattern="#,##0.00">
+                <reportElement x="280" y="0" width="60" height="25"/>
+                <box><pen lineWidth="1"/></box>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <paragraph rightIndent="5"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{tax}]]></textFieldExpression>
+            </textField>
+            <textField pattern="#,##0.00">
+                <reportElement x="340" y="0" width="70" height="25"/>
+                <box><pen lineWidth="1"/></box>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <paragraph rightIndent="5"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{discount}]]></textFieldExpression>
+            </textField>
+            <textField pattern="#,##0.00">
+                <reportElement x="410" y="0" width="80" height="25"/>
+                <box><pen lineWidth="1"/></box>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <paragraph rightIndent="5"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{totalAmount}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="490" y="0" width="65" height="25"/>
+                <box><pen lineWidth="1"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+</jasperReport>

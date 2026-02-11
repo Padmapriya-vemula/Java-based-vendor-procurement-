@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPVMS Test Runner</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 12px; padding: 30px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
+        h1 { color: #667eea; margin-bottom: 10px; }
+        .subtitle { color: #666; margin-bottom: 30px; }
+        .test-section { margin-bottom: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #667eea; }
+        .test-section h2 { color: #2d3748; margin-bottom: 15px; font-size: 20px; }
+        .test-item { margin-bottom: 15px; padding: 15px; background: white; border-radius: 6px; border: 1px solid #e2e8f0; }
+        .test-item h3 { color: #4a5568; font-size: 16px; margin-bottom: 10px; }
+        .test-controls { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+        button { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4); }
+        .btn-success { background: #48bb78; color: white; }
+        .btn-danger { background: #f56565; color: white; }
+        .btn-info { background: #4299e1; color: white; }
+        input, select { padding: 8px 12px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 14px; }
+        .result { margin-top: 10px; padding: 10px; border-radius: 6px; font-family: monospace; font-size: 12px; max-height: 200px; overflow-y: auto; }
+        .result.success { background: #c6f6d5; color: #22543d; border: 1px solid #9ae6b4; }
+        .result.error { background: #fed7d7; color: #742a2a; border: 1px solid #fc8181; }
+        .result.info { background: #bee3f8; color: #2c5282; border: 1px solid #90cdf4; }
+        .token-display { background: #edf2f7; padding: 10px; border-radius: 6px; margin: 10px 0; word-break: break-all; font-size: 12px; }
+        .status-badge { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; margin-left: 10px; }
+        .status-pass { background: #c6f6d5; color: #22543d; }
+        .status-fail { background: #fed7d7; color: #742a2a; }
+        .status-pending { background: #feebc8; color: #7c2d12; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 SPVMS Test Runner</h1>
+        <p class="subtitle">End-to-End Testing Tool for Vendor Procurement System</p>
+
+        <div class="token-display">
+            <strong>Current Token:</strong> <span id="currentToken">Not logged in</span>
+        </div>
+
+        <!-- Authentication Tests -->
+        <div class="test-section">
+            <h2>1. Authentication Tests</h2>
+            
+            <div class="test-item">
+                <h3>Register New User <span class="status-badge status-pending" id="status-register">Pending</span></h3>
+                <div class="test-controls">
+                    <input type="text" id="regName" placeholder="Name" value="Test Admin">
+                    <input type="email" id="regEmail" placeholder="Email" value="testadmin@test.com">
+                    <input type="password" id="regPassword" placeholder="Password" value="Admin@123">
+                    <select id="regRole">
+                        <option value="ADMIN">ADMIN</option>
+                        <option value="VENDOR">VENDOR</option>
+                        <option value="PROCUREMENT">PROCUREMENT</option>
+                        <option value="FINANCE">FINANCE</option>
+                    </select>
+                    <button class="btn-primary" onclick="testRegister()">Register</button>
+                </div>
+                <div id="result-register"></div>
+            </div>
+
+            <div class="test-item">
+                <h3>Login <span class="status-badge status-pending" id="status-login">Pending</span></h3>
+                <div class="test-controls">
+                    <input type="email" id="loginEmail" placeholder="Email" value="admin@company.com">
+                    <input type="password" id="loginPassword" placeholder="Password" value="Admin@123">
+                    <button class="btn-primary" onclick="testLogin()">Login</button>
+                </div>
+                <div id="result-login"></div>
+            </div>
+        </div>
+
+        <!-- Vendor Tests -->
+        <div class="test-section">
+            <h2>2. Vendor Management Tests</h2>
+            
+            <div class="test-item">
+                <h3>Create Active Vendor <span class="status-badge status-pending" id="status-vendor">Pending</span></h3>
+                <div class="test-controls">
+                    <input type="text" id="vendorName" placeholder="Name" value="Tech Solutions Inc">
+                    <input type="email" id="vendorEmail" placeholder="Email" value="tech@solutions.com">
+                    <input type="text" id="vendorPhone" placeholder="Phone (10 digits)" value="9876543210">
+                    <button class="btn-success" onclick="testCreateVendor()">Create Vendor</button>
+                </div>
+                <div id="result-vendor"></div>
+            </div>
+
+            <div class="test-item">
+                <h3>Get Active Vendors <span class="status-badge status-pending" id="status-active-vendors">Pending</span></h3>
+                <div class="test-controls">
+                    <button class="btn-info" onclick="testGetActiveVendors()">Get Active Vendors</button>
+                </div>
+                <div id="result-active-vendors"></div>
+            </div>
+        </div>
+
+        <!-- PR Tests -->
+        <div class="test-section">
+            <h2>3. Purchase Requisition Tests</h2>
+            
+            <div class="test-item">
+                <h3>Create PR (No Vendor) <span class="status-badge status-pending" id="status-pr">Pending</span></h3>
+                <div class="test-controls">
+                    <input type="text" id="prNumber" placeholder="PR Number" value="PR-2024-001">
+                    <input type="text" id="prDesc" placeholder="Description" value="Office Supplies">
+                    <input type="number" id="prQty" placeholder="Quantity" value="50">
+                    <input type="number" id="prAmount" placeholder="Amount" value="25000">
+                    <button class="btn-success" onclick="testCreatePR()">Create PR</button>
+                </div>
+                <div id="result-pr"></div>
+            </div>
+
+            <div class="test-item">
+                <h3>Get PR History <span class="status-badge status-pending" id="status-pr-history">Pending</span></h3>
+                <div class="test-controls">
+                    <input type="number" id="prId" placeholder="PR ID" value="1">
+                    <button class="btn-info" onclick="testGetPRHistory()">Get History</button>
+                </div>
+                <div id="result-pr-history"></div>
+            </div>
+        </div>
+
+        <!-- PO Tests -->
+        <div class="test-section">
+            <h2>4. Purchase Order Tests</h2>
+            
+            <div class="test-item">
+                <h3>Create PO <span class="status-badge status-pending" id="status-po">Pending</span></h3>
+                <div class="test-controls">
+                    <input type="text" id="poTitle" placeholder="Title" value="Office Equipment">
+                    <input type="number" id="poVendorId" placeholder="Vendor ID" value="1">
+                    <button class="btn-success" onclick="testCreatePO()">Create PO</button>
+                </div>
+                <div id="result-po"></div>
+            </div>
+
+            <div class="test-item">
+                <h3>Get PO History <span class="status-badge status-pending" id="status-po-history">Pending</span></h3>
+                <div class="test-controls">
+                    <input type="number" id="poId" placeholder="PO ID" value="1">
+                    <button class="btn-info" onclick="testGetPOHistory()">Get History</button>
+                </div>
+                <div id="result-po-history"></div>
+            </div>
+        </div>
+
+        <!-- Dashboard Tests -->
+        <div class="test-section">
+            <h2>5. Dashboard Tests</h2>
+            
+            <div class="test-item">
+                <h3>Get Dashboard Overview <span class="status-badge status-pending" id="status-dashboard">Pending</span></h3>
+                <div class="test-controls">
+                    <button class="btn-info" onclick="testDashboard()">Get Overview</button>
+                </div>
+                <div id="result-dashboard"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8081/api';
+        let token = '';
+
+        function updateToken(newToken) {
+            token = newToken;
+            document.getElementById('currentToken').textContent = token ? token.substring(0, 50) + '...' : 'Not logged in';
+        }
+
+        function showResult(elementId, data, isError = false) {
+            const resultDiv = document.getElementById(elementId);
+            resultDiv.className = `result ${isError ? 'error' : 'success'}`;
+            resultDiv.textContent = JSON.stringify(data, null, 2);
+        }
+
+        function updateStatus(testId, passed) {
+            const badge = document.getElementById(`status-${testId}`);
+            badge.className = `status-badge ${passed ? 'status-pass' : 'status-fail'}`;
+            badge.textContent = passed ? 'Pass' : 'Fail';
+        }
+
+        async function testRegister() {
+            try {
+                const response = await fetch(`${API_BASE}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: document.getElementById('regName').value,
+                        email: document.getElementById('regEmail').value,
+                        password: document.getElementById('regPassword').value,
+                        roles: [document.getElementById('regRole').value]
+                    })
+                });
+                const data = await response.json();
+                showResult('result-register', data, !response.ok);
+                updateStatus('register', response.ok);
+            } catch (error) {
+                showResult('result-register', { error: error.message }, true);
+                updateStatus('register', false);
+            }
+        }
+
+        async function testLogin() {
+            try {
+                const response = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: document.getElementById('loginEmail').value,
+                        password: document.getElementById('loginPassword').value
+                    })
+                });
+                const data = await response.json();
+                if (response.ok && data.token) {
+                    updateToken(data.token);
+                }
+                showResult('result-login', data, !response.ok);
+                updateStatus('login', response.ok);
+            } catch (error) {
+                showResult('result-login', { error: error.message }, true);
+                updateStatus('login', false);
+            }
+        }
+
+        async function testCreateVendor() {
+            try {
+                const response = await fetch(`${API_BASE}/vendors`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        name: document.getElementById('vendorName').value,
+                        email: document.getElementById('vendorEmail').value,
+                        phone: document.getElementById('vendorPhone').value,
+                        category: 'IT Services',
+                        location: 'Bangalore',
+                        rating: 4.5,
+                        compliance: true
+                    })
+                });
+                const data = await response.json();
+                showResult('result-vendor', data, !response.ok);
+                updateStatus('vendor', response.ok);
+            } catch (error) {
+                showResult('result-vendor', { error: error.message }, true);
+                updateStatus('vendor', false);
+            }
+        }
+
+        async function testGetActiveVendors() {
+            try {
+                const response = await fetch(`${API_BASE}/vendors/active`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+                showResult('result-active-vendors', data, !response.ok);
+                updateStatus('active-vendors', response.ok);
+            } catch (error) {
+                showResult('result-active-vendors', { error: error.message }, true);
+                updateStatus('active-vendors', false);
+            }
+        }
+
+        async function testCreatePR() {
+            try {
+                const params = new URLSearchParams({
+                    requisitionNumber: document.getElementById('prNumber').value,
+                    description: document.getElementById('prDesc').value,
+                    quantity: document.getElementById('prQty').value,
+                    totalAmount: document.getElementById('prAmount').value
+                });
+                const response = await fetch(`${API_BASE}/requisitions?${params}`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+                showResult('result-pr', data, !response.ok);
+                updateStatus('pr', response.ok);
+            } catch (error) {
+                showResult('result-pr', { error: error.message }, true);
+                updateStatus('pr', false);
+            }
+        }
+
+        async function testGetPRHistory() {
+            try {
+                const prId = document.getElementById('prId').value;
+                const response = await fetch(`${API_BASE}/requisitions/${prId}/history`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+                showResult('result-pr-history', data, !response.ok);
+                updateStatus('pr-history', response.ok);
+            } catch (error) {
+                showResult('result-pr-history', { error: error.message }, true);
+                updateStatus('pr-history', false);
+            }
+        }
+
+        async function testCreatePO() {
+            try {
+                const params = new URLSearchParams({
+                    title: document.getElementById('poTitle').value,
+                    vendorId: document.getElementById('poVendorId').value
+                });
+                const response = await fetch(`${API_BASE}/purchase-orders?${params}`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+                showResult('result-po', data, !response.ok);
+                updateStatus('po', response.ok);
+            } catch (error) {
+                showResult('result-po', { error: error.message }, true);
+                updateStatus('po', false);
+            }
+        }
+
+        async function testGetPOHistory() {
+            try {
+                const poId = document.getElementById('poId').value;
+                const response = await fetch(`${API_BASE}/purchase-orders/${poId}/history`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+                showResult('result-po-history', data, !response.ok);
+                updateStatus('po-history', response.ok);
+            } catch (error) {
+                showResult('result-po-history', { error: error.message }, true);
+                updateStatus('po-history', false);
+            }
+        }
+
+        async function testDashboard() {
+            try {
+                const response = await fetch(`${API_BASE}/dashboard/overview`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+                showResult('result-dashboard', data, !response.ok);
+                updateStatus('dashboard', response.ok);
+            } catch (error) {
+                showResult('result-dashboard', { error: error.message }, true);
+                updateStatus('dashboard', false);
+            }
+        }
+    </script>
+</body>
+</html>

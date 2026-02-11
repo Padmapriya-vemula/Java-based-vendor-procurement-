@@ -1,0 +1,55 @@
+# Java
+*.class
+*.jar
+*.war
+*.ear
+target/
+*.log
+
+# Maven
+.mvn/
+mvnw
+mvnw.cmd
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# React Build
+procurement-ui/build/
+procurement-ui/.env.local
+procurement-ui/.env.development.local
+procurement-ui/.env.test.local
+procurement-ui/.env.production.local
+
+# Database
+*.db
+*.sqlite
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Test Coverage
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+*.temp
+~$*
